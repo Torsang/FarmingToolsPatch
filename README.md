@@ -21,6 +21,7 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 - [ ] Steel Behavior Modification
 - [ ] Copper Behavior Modification
 - [ ] Ensure (realistically) maximum compatibility with other mods
+- [ ] Accomodate tool enchantments
 
 ### License
 Licensed under the MIT License. See [here][License] for more information.
