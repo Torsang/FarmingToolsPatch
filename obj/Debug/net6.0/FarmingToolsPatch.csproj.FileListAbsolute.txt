@@ -1,0 +1,8 @@
+F:\Projects\Stardew\FarmingToolsPatch\obj\Debug\net6.0\FarmingToolsPatch.csproj.AssemblyReference.cache
+F:\Projects\Stardew\FarmingToolsPatch\obj\Debug\net6.0\FarmingToolsPatch.GeneratedMSBuildEditorConfig.editorconfig
+F:\Projects\Stardew\FarmingToolsPatch\obj\Debug\net6.0\FarmingToolsPatch.AssemblyInfoInputs.cache
+F:\Projects\Stardew\FarmingToolsPatch\obj\Debug\net6.0\FarmingToolsPatch.AssemblyInfo.cs
+F:\Projects\Stardew\FarmingToolsPatch\obj\Debug\net6.0\FarmingToolsPatch.csproj.CoreCompileInputs.cache
+F:\Projects\Stardew\FarmingToolsPatch\bin\Debug\net6.0\FarmingToolsPatch.deps.json
+F:\Projects\Stardew\FarmingToolsPatch\bin\Debug\net6.0\FarmingToolsPatch.dll
+F:\Projects\Stardew\FarmingToolsPatch\obj\Debug\net6.0\FarmingToolsPatch.dll

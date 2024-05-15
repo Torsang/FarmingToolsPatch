@@ -1,0 +1,10 @@
+{
+  "Name": "FarmingToolsPatch",
+  "Author": "Torsang",
+  "Version": "1.0.2",
+  "Description": "Updates farm tools' charged usage to better match sprinklers.",
+  "UniqueID": "Redwood.FarmingToolsPatch",
+  "EntryDll": "FarmingToolsPatch.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": [ "Nexus:24066" ]
+}
