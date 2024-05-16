@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using StardewModdingAPI;
 using StardewValley;
+using StardewModdingAPI.Events;
+using GenericModConfigMenu;
 
 /***
  ** Original credit to ToweringRedwood for creating this mod in the first place. Many thanks, you're a legend. I hope to do justice to your work.
@@ -26,12 +28,66 @@ namespace FarmingToolsPatch
         public override void Entry(IModHelper helper)
         {
             config = Helper.ReadConfig<ModConfig>();
+            helper.Events.GameLoop.GameLaunched += this.GameLaunched;
 
             Harmony harmony = new Harmony("Torsang.PatchedFarmingTools");
             Type[] types = new Type[] { typeof(Vector2), typeof(int), typeof(Farmer) };
             MethodInfo originalToolsMethod = typeof(Tool).GetMethod("tilesAffected", BindingFlags.Instance | BindingFlags.NonPublic, null, types, null);
             MethodInfo farmingToolsPatch = typeof(PatchedFarmingTilesAffected).GetMethod("Postfix");
             harmony.Patch(originalToolsMethod, null, new HarmonyMethod(farmingToolsPatch));
+        }
+
+        private void GameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+
+            if (configMenu is null)
+            {
+                this.Monitor.Log("Config Menu is somehow null. Fix it!");
+                return;
+            }
+
+            // register mod
+            configMenu.Register
+            (
+                mod: this.ModManifest,
+                reset: () => config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(config)
+            );
+
+            configMenu.SetTitleScreenOnlyForNextOptions
+            (
+                mod: this.ModManifest,
+                titleScreenOnly: false
+            );
+
+            configMenu.AddSectionTitle
+            (
+                mod: this.ModManifest, 
+                text: () => "Iridium Tools "
+            );
+
+            configMenu.AddNumberOption
+            (
+                mod: this.ModManifest,
+                name: () => "Length",
+                tooltip: () => "Number of tiles away the tool will reach",
+                getValue: () => config.iLength,
+                setValue: value => config.iLength = value,
+                min: 0,
+                interval: 1
+            );
+
+            configMenu.AddNumberOption
+            (
+                mod: this.ModManifest,
+                name: () => "Radius",
+                tooltip: () => "Number of parallel lines on each side of the tool's reach",
+                getValue: () => config.iRadius,
+                setValue: value => config.iRadius = value,
+                min: 0,
+                interval: 1
+            );
         }
     }
 
