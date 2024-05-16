@@ -9,6 +9,11 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 
 ### Changelog
 <details>
+  <summary>Version 1.1.2 - GMCM Unfettering</summary>
+
+  - Removed Title Screen restriction for GMCM: Edit tool behavior during gameplay
+</details>
+<details>
   <summary>Version 1.1.1 - All Tool Ranks, Finished GMCM Integration</summary>
 
   - Added control of all upgraded tool qualities
