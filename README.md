@@ -9,6 +9,13 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 
 ### Changelog
 <details>
+  <summary>Version 1.1.1 - All Tools, Finished GMCM Integration</summary>
+
+  - Added control of all upgraded tool qualities
+  - Added GMCM fields to affect the above-mentioned feature
+  - Refactored Harmony class/method for more reasonable efficiency with expanded functionality
+</details>
+<details>
   <summary>Version 1.0.3 - Initial GMCM Implementation</summary>
 
   - Added beginning of Generic Mod Config Menu functionality
@@ -22,9 +29,9 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 
 ### Roadmap
 - [x] Add GMCM Functionality
-- [ ] Gold Behavior Modification
-- [ ] Steel Behavior Modification
-- [ ] Copper Behavior Modification
+- [x] Gold Behavior Modification
+- [x] Steel Behavior Modification
+- [x] Copper Behavior Modification
 - [ ] Ensure (realistically) maximum compatibility with other mods
 - [ ] Accomodate base-game tool enchantments
 
