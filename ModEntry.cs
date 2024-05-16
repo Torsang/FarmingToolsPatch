@@ -57,11 +57,11 @@ namespace FarmingToolsPatch
                 save: () => this.Helper.WriteConfig(config)
             );
 
-            configMenu.SetTitleScreenOnlyForNextOptions
+            /*configMenu.SetTitleScreenOnlyForNextOptions
             (
                 mod: this.ModManifest,
                 titleScreenOnly: false
-            );
+            );*/
 
             configMenu.AddSectionTitle
             (
