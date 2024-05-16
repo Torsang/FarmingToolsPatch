@@ -9,6 +9,11 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 
 ### Changelog
 <details>
+  <summary>Version 1.0.3 - Initial GMCM Implementation</summary>
+
+  - Added beginning of Generic Mod Config Menu functionality
+</details>
+<details>
   <summary>Version 1.0.2 - Initial Fork</summary>
   
   - Update to StardewModConfig 4.1.1 and Harmony 2.3.3
@@ -16,7 +21,7 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 </details>
 
 ### Roadmap
-- [ ] Add GMCM Functionality
+- [x] Add GMCM Functionality
 - [ ] Gold Behavior Modification
 - [ ] Steel Behavior Modification
 - [ ] Copper Behavior Modification
