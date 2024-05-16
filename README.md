@@ -9,7 +9,7 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 
 ### Changelog
 <details>
-  <summary>Version 1.1.1 - All Tools, Finished GMCM Integration</summary>
+  <summary>Version 1.1.1 - All Tool Ranks, Finished GMCM Integration</summary>
 
   - Added control of all upgraded tool qualities
   - Added GMCM fields to affect the above-mentioned feature
