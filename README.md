@@ -7,6 +7,18 @@ Available at [NexusMods.com][ModPage]
 ### Description
 This project creates a mod that replaces the default behavior of Stardew Valley's farming tools to better match other game mechanics. Specifically it changes the tiles affected by the tool's "charge up" moves.
 
+### Hotkey Map
+_this assumes a US keyboard, please adjust accordingly if using another layout._
+
+These keys can be remapped in Generic Mod Config Menu or in the config.json file.
+|Button|Description|
+|------|-----------|
+|Pipe(Backslash)|Toggles Hot Keys on/off|
+|Open Bracket|Increases tool AoE length|
+|Close Bracket|Increases tool AoE width|
+|Semicolon|Decreases tool AoE length|
+|Quote|Decreases tool AoE width|
+
 ### Changelog
 <details>
   <summary>Version 1.2.1 - The HotKeys Cometh</summary>
