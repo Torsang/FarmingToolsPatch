@@ -3,17 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace FarmingToolsPatch
 {
+    public enum Pwr
+    {
+        Copper,
+        Steel,
+        Gold,
+        Iridium
+    }
+
     public class ModConfig
     {
+        public KeybindList incLengthBtn, incRadiusBtn, decLengthBtn, decRadiusBtn, cyclePwrLvl;
+        public int pwrIndex;
         public int cLength, sLength, gLength, iLength;
         public int cRadius, sRadius, gRadius, iRadius;
-        public bool cBool, sBool, gBool, iBool;
+        public bool cBool, sBool, gBool, iBool, hKeyBool;
 
         public ModConfig()
         {
+            //Hotkey fields
+            incLengthBtn = new KeybindList(SButton.OemOpenBrackets);
+            incRadiusBtn = new KeybindList(SButton.OemCloseBrackets);
+            decLengthBtn = new KeybindList(SButton.OemSemicolon);
+            decRadiusBtn = new KeybindList(SButton.OemQuotes);
+            cyclePwrLvl = new KeybindList(SButton.OemPipe);
+            hKeyBool = true;
+            pwrIndex = (int)Pwr.Copper;
+
             //Iridium fields
             iLength = 5;
             iRadius = 2;
