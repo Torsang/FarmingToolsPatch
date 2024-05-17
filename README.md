@@ -1,4 +1,4 @@
-# Farming Tools Patch
+# Farming Tools Patch - Version 1.2.1
 _Forked and updated for Stardew Valley 1.6 running SMAPI 4.0.8+ and Harmony 2.0+_
 
 ### Releases 
@@ -8,6 +8,16 @@ Available at [NexusMods.com][ModPage]
 This project creates a mod that replaces the default behavior of Stardew Valley's farming tools to better match other game mechanics. Specifically it changes the tiles affected by the tool's "charge up" moves.
 
 ### Changelog
+<details>
+  <summary>Version 1.2.1 - The HotKeys Cometh</summary>
+
+  - Implemented SMAPI button detection to allow Hot Key functionality
+  - Refactored GMCM API calls from ModEntry to separate class
+  - Added additional config variables and GMCM methods to handle hot keys
+  - Added new methods to handle button press logic
+  - Fixed logic errors in button press methods to properly constrain tool area of effect
+  - Ternary operators... everywhere...
+</details>
 <details>
   <summary>Version 1.1.2 - GMCM Unfettering</summary>
 
