@@ -44,6 +44,7 @@ This project creates a mod that replaces the default behavior of Stardew Valley'
 
 ### Roadmap
 - [x] Add GMCM Functionality
+- [x] Implement Hot Keys
 - [x] Gold Behavior Modification
 - [x] Steel Behavior Modification
 - [x] Copper Behavior Modification
