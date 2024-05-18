@@ -13,7 +13,7 @@ _this assumes a US keyboard, please adjust accordingly if using another layout._
 These keys can be remapped in Generic Mod Config Menu or in the config.json file.
 |Button|Description|
 |------|-----------|
-|Pipe(Backslash)|Cycles through the power levels for adjustment|
+|Pipe(Backslash)|Cycles power levels for adjustment|
 |Open Bracket|Increases tool AoE length|
 |Close Bracket|Increases tool AoE width|
 |Semicolon|Decreases tool AoE length|
