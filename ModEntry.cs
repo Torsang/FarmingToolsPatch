@@ -110,7 +110,7 @@ namespace FarmingToolsPatch
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? "Longer..." : "Shorter...", Color.White, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get("longer") : this.Helper.Translation.Get("shorter"), Color.White, 800f ) );
         }
 
         private void adjustRadius (bool increase = false)
@@ -137,37 +137,37 @@ namespace FarmingToolsPatch
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? "Wider..." : "Narrower...", Color.White, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get("wider") : this.Helper.Translation.Get("narrower"), Color.White, 800f ) );
         }
 
         private void cyclePowerLevel ()
         {
-            var message = "Now Affecting...";
+            var message = this.Helper.Translation.Get("affect-default");
             switch ( config.pwrIndex )
             {
                 case (int) Pwr.Copper:
                     config.pwrIndex = (int) Pwr.Steel;
-                    message = "Now Affecting Steel...";
+                    message = this.Helper.Translation.Get("affect-steel");
                     break;
 
                 case (int) Pwr.Steel:
                     config.pwrIndex = (int) Pwr.Gold;
-                    message = "Now Affecting Gold...";
+                    message = this.Helper.Translation.Get("affect-gold");
                     break;
 
                 case (int) Pwr.Gold:
                     config.pwrIndex = (int) Pwr.Iridium;
-                    message = "Now Affecting Iridium...";
+                    message = this.Helper.Translation.Get("affect-iridium");
                     break;
 
                 case (int) Pwr.Iridium:
                     config.pwrIndex = (int) Pwr.Copper;
-                    message = "Now Affecting Copper...";
+                    message = this.Helper.Translation.Get("affect-copper");
                     break;
 
                 default:
                     config.pwrIndex = (int) Pwr.Copper;
-                    message = "Now Affecting Copper...";
+                    message = this.Helper.Translation.Get("affect-copper");
                     break;
             }
 
