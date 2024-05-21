@@ -1,4 +1,4 @@
-# Farming Tools Patch - Version 1.2.1
+# Farming Tools Patch - Version 1.3.0
 _Forked and updated for Stardew Valley 1.6 running SMAPI 4.0.8+ and Harmony 2.0+_
 
 ### Releases 
@@ -20,6 +20,11 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 |Quote|Decreases tool AoE width|
 
 ### Changelog
+<details>
+  <summary>Version 1.3.0 - i18n Support</summary>
+
+  - Refactored all game-visible strings from hardcoded to i18n compatible references
+</details>
 <details>
   <summary>Version 1.2.1 - The HotKeys Cometh</summary>
 
@@ -60,6 +65,7 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 - [x] Gold Behavior Modification
 - [x] Steel Behavior Modification
 - [x] Copper Behavior Modification
+- [x] i18n Support
 - [ ] Ensure (realistically) maximum compatibility with other mods
 - [ ] Accomodate base-game tool enchantments
 
