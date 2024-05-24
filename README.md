@@ -14,6 +14,7 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 |Button|Description|
 |------|-----------|
 |Pipe(Backslash)|Cycles power levels for adjustment|
+|Pipe(Hold)|Reset tool values to mod's default|
 |Open Bracket|Increases tool AoE length|
 |Close Bracket|Increases tool AoE width|
 |Semicolon|Decreases tool AoE length|
