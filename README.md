@@ -1,4 +1,4 @@
-# Farming Tools Patch - Version 1.3.0
+# Farming Tools Patch - Version 1.3.1
 _Forked and updated for Stardew Valley 1.6 running SMAPI 4.0.8+ and Harmony 2.0+_
 
 ### Releases 
@@ -20,6 +20,13 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 |Quote|Decreases tool AoE width|
 
 ### Changelog
+<details>
+  <summary>Version 1.3.1 - Reset hotkey added</summary>
+
+  - Added reset to default functionality: hold down the Cycle Charge Level keybind
+  - Customize how much time needed to hold the button in the GMCM menu
+  - Added relevant i18n fields
+</details>
 <details>
   <summary>Version 1.3.0 - i18n Support</summary>
 
