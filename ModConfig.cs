@@ -19,10 +19,11 @@ namespace FarmingToolsPatch
     public class ModConfig
     {
         public KeybindList incLengthBtn, incRadiusBtn, decLengthBtn, decRadiusBtn, cyclePwrLvl;
-        public int pwrIndex;
+        public SButtonState resetHold;
+        public int pwrIndex, resetTime;
         public int cLength, sLength, gLength, iLength;
         public int cRadius, sRadius, gRadius, iRadius;
-        public bool cBool, sBool, gBool, iBool, hKeyBool;
+        public bool cBool, sBool, gBool, iBool, hKeyBool, resetBool;
 
         public ModConfig()
         {
@@ -33,7 +34,9 @@ namespace FarmingToolsPatch
             decRadiusBtn = new KeybindList(SButton.OemQuotes);
             cyclePwrLvl = new KeybindList(SButton.OemPipe);
             hKeyBool = true;
+            resetBool = false;
             pwrIndex = (int)Pwr.Copper;
+            resetTime = 2;
 
             //Iridium fields
             iLength = 5;

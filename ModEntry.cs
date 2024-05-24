@@ -12,6 +12,7 @@ using StardewModdingAPI.Utilities;
 
 /***
  ** Original credit to ToweringRedwood for creating this mod in the first place. Many thanks, you're a legend. I hope to do justice to your work.
+ ** TODO: Find out how to detect the reach enchant so I can work with it later
 ***/
 
 //formerly known as IridiumToolsPatch
@@ -21,7 +22,9 @@ namespace FarmingToolsPatch
     public class ModEntry : Mod
     {
         public static ModConfig config;
-        private const int enumOffset = 2;
+        public const int toolMax = 32;
+        private const int tickModifier = 60;
+        private int resetCounter = 0;
 
         /*********
         ** Public methods
@@ -31,13 +34,17 @@ namespace FarmingToolsPatch
         public override void Entry ( IModHelper helper )
         {
             config = Helper.ReadConfig<ModConfig>();
+
             helper.Events.GameLoop.GameLaunched += this.GameLaunched;
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.UpdateTicked += this.UpdateTicking;
+            helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
 
             Harmony harmony = new Harmony ( "Torsang.PatchedFarmingTools" );
+
             Type[] types = new Type[] { typeof ( Vector2 ), typeof ( int ), typeof ( Farmer ) };
             MethodInfo originalToolsMethod = typeof ( Tool ).GetMethod ( "tilesAffected", BindingFlags.Instance | BindingFlags.NonPublic, null, types, null );
-            MethodInfo farmingToolsPatch = typeof ( PatchedFarmingTilesAffected ).GetMethod( "Postfix" );
+            MethodInfo farmingToolsPatch = typeof ( PatchedFarmingTilesAffected ).GetMethod ( "Postfix" );
+
             harmony.Patch( originalToolsMethod, null, new HarmonyMethod ( farmingToolsPatch ) );
         }
 
@@ -52,14 +59,50 @@ namespace FarmingToolsPatch
         }
 
         /*
-         * TODO: Find out how to detect the reach enchant so I can work with it later
+          * Necessary to handle press vs hold functionality? IDK maybe I'm just dumb
+          * The OnButtonsChanged method only seems to fire during presses/releases, it doesn't track button holds
+          * Hopefully this is lightweight enough not to cause problems, fingers crossed
         */
-        private void OnButtonPressed ( object sender, ButtonPressedEventArgs e )
+        private void UpdateTicking ( object sender, EventArgs e )
         {
-            // ignore if player hasn't loaded a save yet or hot keys are disabled
+            // Ignore if player hasn't loaded a save yet or hot keys are disabled
+            if ( !Context.IsWorldReady || config.hKeyBool )
+            {
+                config.resetHold = config.cyclePwrLvl.GetState();
+
+                if ( config.resetHold == SButtonState.Held )
+                {
+                    this.resetCounter++;
+
+                    if ( this.resetCounter >= config.resetTime * tickModifier )
+                    {
+                        // Suppressing a single key, even if in a key-combo, will break the SButtonState.Held status
+                        Helper.Input.Suppress ( config.cyclePwrLvl.Keybinds [0].Buttons [0] );
+                        
+                        // Using the boolean to send the message will only send the message once
+                        config.resetBool = true;
+                        if ( config.resetBool )
+                            Game1.addHUDMessage ( new HUDMessage ( this.Helper.Translation.Get ( "reset-notify" ), Color.OrangeRed, 800f ) );
+                        config = Helper.ReadConfig<ModConfig> ();
+                    }
+                }
+                else if ( config.resetHold == SButtonState.Released && this.resetCounter <= ( config.resetTime * tickModifier / 4 ) )
+                {
+                    cyclePowerLevel ();
+                }
+                else if ( this.resetCounter != 0 )
+                {
+                    this.resetCounter = 0;
+                }
+            }
+        }
+
+        private void OnButtonsChanged ( object sender, ButtonsChangedEventArgs e )
+        {
+            // Ignore if player hasn't loaded a save yet or hot keys are disabled
             if ( !Context.IsWorldReady || !config.hKeyBool )
                 return;
-            
+
             if ( config.incLengthBtn.JustPressed() )
                 adjustLength ( true );
             if ( config.decLengthBtn.JustPressed() )
@@ -68,19 +111,17 @@ namespace FarmingToolsPatch
                 adjustRadius ( true );
             if ( config.decRadiusBtn.JustPressed() )
                 adjustRadius ( false );
-            if ( config.cyclePwrLvl.JustPressed())
-                cyclePowerLevel ();
 
             // print button presses to the console window
             // Added for debugging purposes
-            /*if (e.Button is SButton.MouseLeft)
+            /*if ( e.Button is SButton.MouseLeft )
             {
-                this.Monitor.Log($"Player has {Game1.player.enchantments.Count} enchantments.", LogLevel.Debug);
+                this.Monitor.Log ( $"Player has {Game1.player.enchantments.Count} enchantments.", LogLevel.Debug );
                 if (Game1.player.enchantments.Count > 0)
                 {
-                    foreach (BaseEnchantment ench in Game1.player.enchantments)
+                    foreach ( BaseEnchantment ench in Game1.player.enchantments )
                     {
-                        this.Monitor.Log($"Player has the following enchantments: {ench}.", LogLevel.Debug);
+                        this.Monitor.Log ( $"Player has the following enchantments: {ench}.", LogLevel.Debug );
                     }
                 }
             }*/
@@ -91,26 +132,26 @@ namespace FarmingToolsPatch
             switch ( config.pwrIndex )
             {
                 case (int) Pwr.Copper:
-                    config.cLength = Math.Clamp ( config.cLength + ( (increase) ? (1) : (-1) ), 1, 128 );
+                    config.cLength = Math.Clamp ( config.cLength + ( (increase) ? (1) : (-1) ), 1, toolMax );
                     break;
 
                 case (int) Pwr.Steel:
-                    config.sLength = Math.Clamp ( config.sLength + ( (increase) ? (1) : (-1) ), 1, 128 );
+                    config.sLength = Math.Clamp ( config.sLength + ( (increase) ? (1) : (-1) ), 1, toolMax);
                     break;
                     
                 case (int) Pwr.Gold:
-                    config.gLength = Math.Clamp ( config.gLength + ( (increase) ? (1) : (-1) ), 1, 128 );
+                    config.gLength = Math.Clamp ( config.gLength + ( (increase) ? (1) : (-1) ), 1, toolMax);
                     break;
 
                 case (int) Pwr.Iridium:
-                    config.iLength = Math.Clamp ( config.iLength + ( (increase) ? (1) : (-1) ), 1, 128 );
+                    config.iLength = Math.Clamp ( config.iLength + ( (increase) ? (1) : (-1) ), 1, toolMax );
                     break;
 
                 default:
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get("longer") : this.Helper.Translation.Get("shorter"), Color.White, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "longer" ) : this.Helper.Translation.Get ( "shorter" ), Color.OrangeRed, 800f ) );
         }
 
         private void adjustRadius (bool increase = false)
@@ -118,56 +159,56 @@ namespace FarmingToolsPatch
             switch (config.pwrIndex)
             {
                 case (int) Pwr.Copper:
-                    config.cRadius = Math.Clamp ( config.cRadius + ( (increase) ? (1) : (-1) ), 0, 128 );
+                    config.cRadius = Math.Clamp ( config.cRadius + ( (increase) ? (1) : (-1) ), 0, toolMax);
                     break;
 
                 case (int) Pwr.Steel:
-                    config.sRadius = Math.Clamp ( config.sRadius + ( (increase) ? (1) : (-1) ), 0, 128 );
+                    config.sRadius = Math.Clamp ( config.sRadius + ( (increase) ? (1) : (-1) ), 0, toolMax );
                     break;
 
                 case (int) Pwr.Gold:
-                    config.gRadius = Math.Clamp ( config.gRadius + ( (increase) ? (1) : (-1) ), 0, 128 );
+                    config.gRadius = Math.Clamp ( config.gRadius + ( (increase) ? (1) : (-1) ), 0, toolMax );
                     break;
 
                 case (int) Pwr.Iridium:
-                    config.iRadius = Math.Clamp ( config.iRadius + ( (increase) ? (1) : (-1) ), 0, 128 );
+                    config.iRadius = Math.Clamp ( config.iRadius + ( (increase) ? (1) : (-1) ), 0, toolMax );
                     break;
 
                 default:
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get("wider") : this.Helper.Translation.Get("narrower"), Color.White, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "wider" ) : this.Helper.Translation.Get ( "narrower" ), Color.OrangeRed, 800f ) );
         }
 
         private void cyclePowerLevel ()
         {
-            var message = this.Helper.Translation.Get("affect-default");
+            var message = this.Helper.Translation.Get ( "affect-default" );
             switch ( config.pwrIndex )
             {
                 case (int) Pwr.Copper:
                     config.pwrIndex = (int) Pwr.Steel;
-                    message = this.Helper.Translation.Get("affect-steel");
+                    message = this.Helper.Translation.Get ( "affect-steel" );
                     break;
 
                 case (int) Pwr.Steel:
                     config.pwrIndex = (int) Pwr.Gold;
-                    message = this.Helper.Translation.Get("affect-gold");
+                    message = this.Helper.Translation.Get ( "affect-gold" );
                     break;
 
                 case (int) Pwr.Gold:
                     config.pwrIndex = (int) Pwr.Iridium;
-                    message = this.Helper.Translation.Get("affect-iridium");
+                    message = this.Helper.Translation.Get ( "affect-iridium" );
                     break;
 
                 case (int) Pwr.Iridium:
                     config.pwrIndex = (int) Pwr.Copper;
-                    message = this.Helper.Translation.Get("affect-copper");
+                    message = this.Helper.Translation.Get ( "affect-copper" );
                     break;
 
                 default:
                     config.pwrIndex = (int) Pwr.Copper;
-                    message = this.Helper.Translation.Get("affect-copper");
+                    message = this.Helper.Translation.Get ( "affect-copper" );
                     break;
             }
 
@@ -186,16 +227,16 @@ namespace FarmingToolsPatch
                 switch ( who.FacingDirection )
                 {
                     case 0:
-                        direction = new Vector2(0, -1); orthogonal = new Vector2(1, 0);
+                        direction = new Vector2 (0, -1); orthogonal = new Vector2 (1, 0);
                         break;
                     case 1:
-                        direction = new Vector2(1, 0); orthogonal = new Vector2(0, 1);
+                        direction = new Vector2 (1, 0); orthogonal = new Vector2 (0, 1);
                         break;
                     case 2:
-                        direction = new Vector2(0, 1); orthogonal = new Vector2(-1, 0);
+                        direction = new Vector2 (0, 1); orthogonal = new Vector2 (-1, 0);
                         break;
                     case 3:
-                        direction = new Vector2(-1, 0); orthogonal = new Vector2(0, -1);
+                        direction = new Vector2 (-1, 0); orthogonal = new Vector2 (0, -1);
                         break;
                     default:
                         direction = Vector2.Zero; orthogonal = Vector2.Zero;
