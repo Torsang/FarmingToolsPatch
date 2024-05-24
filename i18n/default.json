@@ -11,6 +11,8 @@
   "affect-gold": "Adjusting Gold",
   "affect-iridium": "Adjusting Iridium",
 
+  "reset-notify": "Tools AOE reset to defaults",
+
   //GMCM Hotkey Section
   "hotkey-options": "Hotkey Options",
   "hotkey-toggle": "Toggle Hotkeys",
@@ -30,6 +32,9 @@
 
   "cycle-charge-lvl": "Cycle Charge Level",
   "cycle-cl-tooltip": "Cycle (one way) through the power levels to adjust their area of effect",
+
+  "reset-default": "Reload Default AOE Values",
+  "reset-tooltip": "Holding the Cycle Charge Level key for this many seconds will reset the mod's values to default",
 
   //Iridium (level 4) Options
   "iridium-section": "Iridium Tools",
