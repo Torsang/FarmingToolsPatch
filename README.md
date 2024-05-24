@@ -27,6 +27,7 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
   - Added reset to default functionality: hold down the Cycle Charge Level keybind
   - Customize how much time needed to hold the button in the GMCM menu
   - Added relevant i18n fields
+  - Refactored global reach/radius values and updated GMCM fields to reflect this
 </details>
 <details>
   <summary>Version 1.3.0 - i18n Support</summary>
