@@ -82,7 +82,7 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 Licensed under the MIT License. See [here][License] for more information.
 
 ### Acknowledgments
-_[EKomperud] producer of the original mad and generally cool cat_
+- _[EKomperud] producer of the original mad and generally cool cat_
 
 [ModPage]: <https://www.nexusmods.com/stardewvalley/mods/24066/>
 [License]: <https://github.com/Torsang/FarmingToolsPatch/blob/main/LICENSE>
