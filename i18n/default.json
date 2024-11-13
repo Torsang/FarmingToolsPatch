@@ -31,13 +31,13 @@
   "radius-dec-btn": "Decrease AOE Radius",
   "radius-db-tooltip": "Remove tiles laterally from your tool's area of effect",
 
-  "cycle-charge-lvl": "Cycle Charge Level",
+  "cycle-chargelvl-btn": "Cycle Charge Level",
   "cycle-cl-tooltip": "Cycle (one way) through the power levels to adjust their area of effect",
 
-  "reset-default": "Reload Default AOE Values",
+  "reset-default-btn": "Reload Default AOE Values",
   "reset-tooltip": "Holding the Cycle Charge Level key for this many seconds will reset the mod's values to default",
 
-  // Reaching (level 4+) Options
+  // Reaching (level 5) Options
   "reach-section": "Reaching Tools",
   "reach-bool": "Modify Reaching Tools",
 

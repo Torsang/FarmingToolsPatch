@@ -1,7 +1,7 @@
 {
   "Name": "FarmingToolsPatch",
   "Author": "Torsang",
-  "Version": "2.0.0-beta1",
+  "Version": "2.0.0-beta3",
   "Description": "Updates farm tools' charged usage to better match sprinklers.",
   "UniqueID": "Torsang.FarmingToolsPatch",
   "EntryDll": "FarmingToolsPatch.dll",

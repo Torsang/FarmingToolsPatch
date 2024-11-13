@@ -72,7 +72,7 @@ namespace FarmingToolsPatch
             cfgMenu.AddKeybindList
             (
                 mod: mod.ModManifest,
-                name: () => mod.Helper.Translation.Get ( "cycle-charge-lvl" ),
+                name: () => mod.Helper.Translation.Get ( "cycle-chargelvl-btn" ),
                 tooltip: () => mod.Helper.Translation.Get ( "cycle-cl-tooltip" ),
                 getValue: () => ModEntry.config.cyclePwrLvl,
                 setValue: value => ModEntry.config.cyclePwrLvl = value
@@ -80,7 +80,7 @@ namespace FarmingToolsPatch
             cfgMenu.AddNumberOption
             (
                 mod: mod.ModManifest,
-                name: () => mod.Helper.Translation.Get ( "reset-default" ),
+                name: () => mod.Helper.Translation.Get ( "reset-default-btn" ),
                 tooltip: () => mod.Helper.Translation.Get ( "reset-tooltip" ),
                 getValue: () => ModEntry.config.resetTime,
                 setValue: value => ModEntry.config.resetTime = value,

@@ -1,4 +1,4 @@
-# Farming Tools Patch - Version 2.0.0-beta1
+# Farming Tools Patch - Version 2.0.0-beta3
 _Forked and updated for Stardew Valley 1.6 running SMAPI 4.0.8+ and Harmony 2.0+_
 
 ### Releases 
@@ -22,7 +22,17 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 
 ### Changelog
 <details>
-  <summary>Version 2.0.0-beta1 - Major QoL addition and _Compatibilization Refactorization™_</summary>
+  <summary>Version 2.0.0-beta3 - Bugfixes</summary>
+
+  - Fixed reaching enchantment AOE logic when combined with the immediate max setting
+</details>
+<details>
+  <summary>Version 2.0.0-beta2 - Bugfixes</summary>
+
+  - Fixed reaching enchantment AOE logic
+</details>
+<details>
+  <summary>Version 2.0.0-beta1 - Major QoL addition and Compatibilization Refactorization™</summary>
 
   - Added checks for held tool and thus should no longer conflict with mods affecting other tools
   - Added ability to use the max charge level immediately

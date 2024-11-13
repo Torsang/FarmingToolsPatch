@@ -16,8 +16,8 @@ using StardewValley.Enchantments;
  ** Original credit to ToweringRedwood for creating this mod in the first place. Many thanks, you're a legend. I hope to do justice to your work.
  ** TODO: Find out how to detect the reach enchant so I can work with it later
  ** Author: Torsang
- ** Latest Build: 2.0.0-beta1
- ** Build Date: 2024-11-11
+ ** Latest Build: 2.0.0-beta3
+ ** Build Date: 2024-11-12
 ***/
 
 // Formerly known as IridiumToolsPatch
@@ -62,9 +62,7 @@ namespace FarmingToolsPatch
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>( "spacechase0.GenericModConfigMenu" );
 
             if ( configMenu != null )
-            {
-                GenModConfigMenu.configurate( this, configMenu );
-            }
+            { GenModConfigMenu.configurate( this, configMenu ); }
         }
 
         /*
@@ -99,13 +97,9 @@ namespace FarmingToolsPatch
                         }
                     }
                     else if ( config.resetHold == SButtonState.Released && this.resetCounter <= ( config.resetTime * tickModifier / 4 ) )
-                    {
-                        cyclePowerLevel ();
-                    }
+                    { cyclePowerLevel (); }
                     else if ( this.resetCounter != 0 )
-                    {
-                        this.resetCounter = 0;
-                    }
+                    { this.resetCounter = 0; }
                 }
             }
         }
@@ -114,16 +108,16 @@ namespace FarmingToolsPatch
         {
             // Ignore if player hasn't loaded a save yet or hot keys are disabled
             if ( !Context.IsWorldReady || !config.hKeyBool )
-                return;
+            { return; }
 
-            if ( config.incLengthBtn.JustPressed() )
-                adjustLength ( true );
-            if ( config.decLengthBtn.JustPressed() )
-                adjustLength ( false );
-            if ( config.incRadiusBtn.JustPressed() )
-                adjustRadius ( true );
-            if ( config.decRadiusBtn.JustPressed() )
-                adjustRadius ( false );
+            if ( config.incLengthBtn.JustPressed () )
+            { adjustLength ( true ); }
+            if ( config.decLengthBtn.JustPressed () )
+            { adjustLength ( false ); }
+            if ( config.incRadiusBtn.JustPressed () )
+            { adjustRadius ( true ); }
+            if ( config.decRadiusBtn.JustPressed () )
+            { adjustRadius ( false ); }
         }
 
         private void adjustLength ( bool increase = false )
@@ -249,28 +243,25 @@ namespace FarmingToolsPatch
                     if ( config.mIBool )
                     {
                         powerLvl = who.CurrentTool.UpgradeLevel + 1;
+                        if ( who.CurrentTool.hasEnchantmentOfType<ReachingToolEnchantment>() )
+                        { powerLvl++; }
                     }
                     else
-                    {
-                        powerLvl = power;
-                    }
+                    { powerLvl = power; }
 
                     // Determine the AOE dimensions
                     switch ( powerLvl )
                     {
                         // Set iridium values, modded or vanilla
                         // Check for reaching enchantment and if present, use those values instead
+                        case 6:
+                            length = ( ModEntry.config.rBool ) ? ModEntry.config.rLength : 5;
+                            radius = ( ModEntry.config.rBool ) ? ModEntry.config.rRadius : 2;
+                            break;
+
                         case 5:
-                            if ( who.CurrentTool.hasEnchantmentOfType<ReachingToolEnchantment> () )
-                            {
-                                length = ( ModEntry.config.rBool ) ? ModEntry.config.rLength : 5;
-                                radius = ( ModEntry.config.rBool ) ? ModEntry.config.rRadius : 2;
-                            }
-                            else
-                            {
-                                length = ( ModEntry.config.iBool ) ? ModEntry.config.iLength : 6;
-                                radius = ( ModEntry.config.iBool ) ? ModEntry.config.iRadius : 1;
-                            }
+                            length = ( ModEntry.config.iBool ) ? ModEntry.config.iLength : 6;
+                            radius = ( ModEntry.config.iBool ) ? ModEntry.config.iRadius : 1;
                             break;
 
                         // Set gold values, modded or vanilla
