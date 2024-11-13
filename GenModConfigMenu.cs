@@ -92,6 +92,42 @@ namespace FarmingToolsPatch
             cfgMenu.AddSectionTitle
             (
                 mod: mod.ModManifest,
+                text: () => mod.Helper.Translation.Get ( "reach-section" )
+            );
+            cfgMenu.AddBoolOption
+            (
+                mod: mod.ModManifest,
+                name: () => mod.Helper.Translation.Get ( "reach-bool" ),
+                tooltip: () => mod.Helper.Translation.Get ( "tool-bool-tooltip" ),
+                getValue: () => ModEntry.config.rBool,
+                setValue: value => ModEntry.config.rBool = value
+            );
+            cfgMenu.AddNumberOption
+            (
+                mod: mod.ModManifest,
+                name: () => mod.Helper.Translation.Get ( "tool-length" ),
+                tooltip: () => mod.Helper.Translation.Get ( "tool-l-tooltip" ),
+                getValue: () => ModEntry.config.rLength,
+                setValue: value => ModEntry.config.rLength = value,
+                min: 1,
+                max: ModEntry.toolMax,
+                interval: 1
+            );
+            cfgMenu.AddNumberOption
+            (
+                mod: mod.ModManifest,
+                name: () => mod.Helper.Translation.Get ( "tool-radius" ),
+                tooltip: () => mod.Helper.Translation.Get ( "tool-r-tooltip" ),
+                getValue: () => ModEntry.config.rRadius,
+                setValue: value => ModEntry.config.rRadius = value,
+                min: 0,
+                max: ModEntry.toolMax,
+                interval: 1
+            );
+
+            cfgMenu.AddSectionTitle
+            (
+                mod: mod.ModManifest,
                 text: () => mod.Helper.Translation.Get ( "iridium-section" )
             );
             cfgMenu.AddBoolOption
@@ -231,6 +267,20 @@ namespace FarmingToolsPatch
                 min: 0,
                 max: ModEntry.toolMax,
                 interval: 1
+            );
+
+            cfgMenu.AddSectionTitle
+            (
+                mod: mod.ModManifest,
+                text: () => mod.Helper.Translation.Get ( "max-immediate-section" )
+            );
+            cfgMenu.AddBoolOption
+            (
+                mod: mod.ModManifest,
+                name: () => mod.Helper.Translation.Get ( "max-immediate-bool" ),
+                tooltip: () => mod.Helper.Translation.Get ( "max-immediate-bool-tooltip" ),
+                getValue: () => ModEntry.config.mIBool,
+                setValue: value => ModEntry.config.mIBool = value
             );
         }
     }

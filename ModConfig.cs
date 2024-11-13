@@ -21,13 +21,13 @@ namespace FarmingToolsPatch
         public KeybindList incLengthBtn, incRadiusBtn, decLengthBtn, decRadiusBtn, cyclePwrLvl;
         public SButtonState resetHold;
         public int pwrIndex, resetTime;
-        public int cLength, sLength, gLength, iLength;
-        public int cRadius, sRadius, gRadius, iRadius;
-        public bool cBool, sBool, gBool, iBool, hKeyBool, resetBool;
+        public int cLength, sLength, gLength, iLength, rLength;
+        public int cRadius, sRadius, gRadius, iRadius, rRadius;
+        public bool cBool, sBool, gBool, iBool, rBool, mIBool, hKeyBool, resetBool;
 
         public ModConfig()
         {
-            //Hotkey fields
+            // Hotkey fields
             incLengthBtn = new KeybindList(SButton.OemOpenBrackets);
             incRadiusBtn = new KeybindList(SButton.OemCloseBrackets);
             decLengthBtn = new KeybindList(SButton.OemSemicolon);
@@ -38,22 +38,30 @@ namespace FarmingToolsPatch
             pwrIndex = (int)Pwr.Copper;
             resetTime = 2;
 
-            //Iridium fields
+            // Max Immediate field
+            mIBool = false;
+
+            // Reaching tool fields
+            rLength = 7;
+            rRadius = 3;
+            rBool = true;
+            
+            // Iridium fields
             iLength = 5;
             iRadius = 2;
             iBool = true;
 
-            //Gold fields
+            // Gold fields
             gLength = 6;
             gRadius = 1;
             gBool = true;
 
-            //Steel fields
+            // Steel fields
             sLength = 3;
             sRadius = 1;
             sBool = true;
 
-            //Copper fields
+            // Copper fields
             cLength = 3;
             cRadius = 0;
             cBool = true;

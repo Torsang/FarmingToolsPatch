@@ -1,5 +1,5 @@
 {
-  //Notifications In-Game
+  // Notifications In-Game
   "longer": "Longer Reach",
   "shorter": "Shorter Reach",
   "wider": "Wider Radius",
@@ -10,10 +10,11 @@
   "affect-steel": "Adjusting Steel",
   "affect-gold": "Adjusting Gold",
   "affect-iridium": "Adjusting Iridium",
+  "affect-ench": "Adjusting Reaching",
 
   "reset-notify": "Tools AOE reset to defaults",
 
-  //GMCM Hotkey Section
+  // GMCM Hotkey Section
   "hotkey-options": "Hotkey Options",
   "hotkey-toggle": "Toggle Hotkeys",
   "hktoggle-tooltip": "Check to enable hotkeys, uncheck to disable",
@@ -36,23 +37,32 @@
   "reset-default": "Reload Default AOE Values",
   "reset-tooltip": "Holding the Cycle Charge Level key for this many seconds will reset the mod's values to default",
 
-  //Iridium (level 4) Options
+  // Reaching (level 4+) Options
+  "reach-section": "Reaching Tools",
+  "reach-bool": "Modify Reaching Tools",
+
+  // Iridium (level 4) Options
   "iridium-section": "Iridium Tools",
   "iridium-bool": "Modify Iridium Tools",
 
-  //Gold (level 3) Options
+  // Gold (level 3) Options
   "gold-section": "Gold Tools",
   "gold-bool": "Modify Gold Tools",
 
-  //Steel (level 2) Options
+  // Steel (level 2) Options
   "steel-section": "Steel Tools",
   "steel-bool": "Modify Steel Tools",
 
-  //Copper (level 1) Options
+  // Copper (level 1) Options
   "copper-section": "Copper Tools",
   "copper-bool": "Modify Copper Tools",
 
-  //Generic Tool Options
+  // Maximum Immediate Options
+  "max-immediate-section": "Max AOE Settings",
+  "max-immediate-bool": "Max AOE at First Charge",
+  "max-immediate-bool-tooltip": "Charged AOE is always the max size for your tool's quality",
+
+  // Generic Tool Options
   "tool-bool-tooltip": "Check to use the below settings, uncheck to use vanilla values",
   "tool-length": "Length",
   "tool-l-tooltip": "Number of tiles away the tool will reach",

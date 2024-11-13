@@ -9,13 +9,18 @@ using StardewModdingAPI.Events;
 using GenericModConfigMenu;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI.Utilities;
+using StardewValley.Tools;
+using StardewValley.Enchantments;
 
 /***
  ** Original credit to ToweringRedwood for creating this mod in the first place. Many thanks, you're a legend. I hope to do justice to your work.
  ** TODO: Find out how to detect the reach enchant so I can work with it later
+ ** Author: Torsang
+ ** Latest Build: 2.0.0-beta1
+ ** Build Date: 2024-11-11
 ***/
 
-//formerly known as IridiumToolsPatch
+// Formerly known as IridiumToolsPatch
 namespace FarmingToolsPatch
 {
     /// <summary>The mod entry point.</summary>
@@ -27,7 +32,7 @@ namespace FarmingToolsPatch
         private int resetCounter = 0;
 
         /*********
-        ** Public methods
+        ** Public method(s)
         *********/
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -38,8 +43,9 @@ namespace FarmingToolsPatch
             helper.Events.GameLoop.GameLaunched += this.GameLaunched;
             helper.Events.GameLoop.UpdateTicked += this.UpdateTicking;
             helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
+            //helper.Events.GameLoop.OneSecondUpdateTicking += this.OneSecondUpdateTick;
 
-            Harmony harmony = new Harmony ( "Torsang.PatchedFarmingTools" );
+            Harmony harmony = new Harmony ( ModManifest.UniqueID );
 
             Type[] types = new Type[] { typeof ( Vector2 ), typeof ( int ), typeof ( Farmer ) };
             MethodInfo originalToolsMethod = typeof ( Tool ).GetMethod ( "tilesAffected", BindingFlags.Instance | BindingFlags.NonPublic, null, types, null );
@@ -48,6 +54,9 @@ namespace FarmingToolsPatch
             harmony.Patch( originalToolsMethod, null, new HarmonyMethod ( farmingToolsPatch ) );
         }
 
+        /*********
+        ** Private Methods
+        *********/
         private void GameLaunched ( object sender, GameLaunchedEventArgs e )
         {
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>( "spacechase0.GenericModConfigMenu" );
@@ -65,34 +74,38 @@ namespace FarmingToolsPatch
         */
         private void UpdateTicking ( object sender, EventArgs e )
         {
-            // Ignore if player hasn't loaded a save yet or hot keys are disabled
-            if ( !Context.IsWorldReady || config.hKeyBool )
+            // Ignore if save has not finished loading
+            if ( Context.IsWorldReady )
             {
-                config.resetHold = config.cyclePwrLvl.GetState();
-
-                if ( config.resetHold == SButtonState.Held )
+                //Ignore if hot keys are disabled
+                if ( config.hKeyBool )
                 {
-                    this.resetCounter++;
+                    config.resetHold = config.cyclePwrLvl.GetState ();
 
-                    if ( this.resetCounter >= config.resetTime * tickModifier )
+                    if ( config.resetHold == SButtonState.Held )
                     {
-                        // Suppressing a single key, even if in a key-combo, will break the SButtonState.Held status
-                        Helper.Input.Suppress ( config.cyclePwrLvl.Keybinds [0].Buttons [0] );
-                        
-                        // Using the boolean to send the message will only send the message once
-                        config.resetBool = true;
-                        if ( config.resetBool )
-                            Game1.addHUDMessage ( new HUDMessage ( this.Helper.Translation.Get ( "reset-notify" ), Color.OrangeRed, 800f ) );
-                        config = Helper.ReadConfig<ModConfig> ();
+                        this.resetCounter++;
+
+                        if ( this.resetCounter >= config.resetTime * tickModifier )
+                        {
+                            // Suppressing a single key, even if in a key-combo, will break the SButtonState.Held status
+                            Helper.Input.Suppress ( config.cyclePwrLvl.Keybinds [0].Buttons [0] );
+
+                            // Using the boolean to send the message will only send the message once
+                            config.resetBool = true;
+                            if ( config.resetBool )
+                                Game1.addHUDMessage ( new HUDMessage ( this.Helper.Translation.Get ( "reset-notify" ), 800f, false ) );
+                            config = Helper.ReadConfig<ModConfig> ();
+                        }
                     }
-                }
-                else if ( config.resetHold == SButtonState.Released && this.resetCounter <= ( config.resetTime * tickModifier / 4 ) )
-                {
-                    cyclePowerLevel ();
-                }
-                else if ( this.resetCounter != 0 )
-                {
-                    this.resetCounter = 0;
+                    else if ( config.resetHold == SButtonState.Released && this.resetCounter <= ( config.resetTime * tickModifier / 4 ) )
+                    {
+                        cyclePowerLevel ();
+                    }
+                    else if ( this.resetCounter != 0 )
+                    {
+                        this.resetCounter = 0;
+                    }
                 }
             }
         }
@@ -111,20 +124,6 @@ namespace FarmingToolsPatch
                 adjustRadius ( true );
             if ( config.decRadiusBtn.JustPressed() )
                 adjustRadius ( false );
-
-            // print button presses to the console window
-            // Added for debugging purposes
-            /*if ( e.Button is SButton.MouseLeft )
-            {
-                this.Monitor.Log ( $"Player has {Game1.player.enchantments.Count} enchantments.", LogLevel.Debug );
-                if (Game1.player.enchantments.Count > 0)
-                {
-                    foreach ( BaseEnchantment ench in Game1.player.enchantments )
-                    {
-                        this.Monitor.Log ( $"Player has the following enchantments: {ench}.", LogLevel.Debug );
-                    }
-                }
-            }*/
         }
 
         private void adjustLength ( bool increase = false )
@@ -151,7 +150,7 @@ namespace FarmingToolsPatch
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "longer" ) : this.Helper.Translation.Get ( "shorter" ), Color.OrangeRed, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "longer" ) : this.Helper.Translation.Get ( "shorter" ), 800f, false ) );
         }
 
         private void adjustRadius (bool increase = false)
@@ -178,7 +177,7 @@ namespace FarmingToolsPatch
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "wider" ) : this.Helper.Translation.Get ( "narrower" ), Color.OrangeRed, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "wider" ) : this.Helper.Translation.Get ( "narrower" ), 800f, false ) );
         }
 
         private void cyclePowerLevel ()
@@ -212,72 +211,96 @@ namespace FarmingToolsPatch
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( message, Color.White, 800f ) );
+            Game1.addHUDMessage ( new HUDMessage ( message, 800f, false ) );
         }
 
         class PatchedFarmingTilesAffected
         {
-            static public void Postfix ( ref List<Vector2> __result, Vector2 tileLocation, int power, Farmer who )
+            static public void Postfix (ref List<Vector2> __result, Vector2 tileLocation, int power, Farmer who )
             {
-                __result.Clear ();
-                Vector2 direction;
-                Vector2 orthogonal;
-                int length = 1, radius = 0;
-
-                switch ( who.FacingDirection )
+                if ( who.CurrentTool is ( WateringCan or Hoe ) )
                 {
-                    case 0:
-                        direction = new Vector2 (0, -1); orthogonal = new Vector2 (1, 0);
-                        break;
-                    case 1:
-                        direction = new Vector2 (1, 0); orthogonal = new Vector2 (0, 1);
-                        break;
-                    case 2:
-                        direction = new Vector2 (0, 1); orthogonal = new Vector2 (-1, 0);
-                        break;
-                    case 3:
-                        direction = new Vector2 (-1, 0); orthogonal = new Vector2 (0, -1);
-                        break;
-                    default:
-                        direction = Vector2.Zero; orthogonal = Vector2.Zero;
-                        break;
-                }
+                    __result.Clear ();
+                    Vector2 direction;
+                    Vector2 orthogonal;
+                    int length = 1, radius = 0, powerLvl = 1;
 
-                //Set copper values, modded or vanilla
-                if ( power >= 2 )
-                {
-                    length = ( ModEntry.config.cBool ) ? ModEntry.config.cLength : 3;
-                    radius = ( ModEntry.config.cBool ) ? ModEntry.config.cRadius : 0;
-                }
-
-                //Set steel values, modded or vanilla
-                if ( power >= 3 )
-                {
-                    length = ( ModEntry.config.sBool ) ? ModEntry.config.sLength : 5;
-                    radius = ( ModEntry.config.sBool ) ? ModEntry.config.sRadius : 0;
-                }
-
-                //Set gold values, modded or vanilla
-                if ( power >= 4 )
-                {
-                    length = ( ModEntry.config.gBool ) ? ModEntry.config.gLength : 3;
-                    radius = ( ModEntry.config.gBool ) ? ModEntry.config.gRadius : 1;
-                }
-
-                //Set iridium values, modded or vanilla
-                if ( power >= 5 )
-                {
-                    length = ( ModEntry.config.iBool ) ? ModEntry.config.iLength : 6;
-                    radius = ( ModEntry.config.iBool ) ? ModEntry.config.iRadius : 1;
-                }
-
-                for ( int x = 0; x < length; x++ )
-                {
-                    __result.Add ( direction * x + tileLocation );
-                    for ( int y = 1; y <= radius; y++ )
+                    // Which direction to orient the AOE, and establish matrix multipliers to that effect
+                    switch ( who.FacingDirection )
                     {
-                        __result.Add ( ( direction * x ) + ( orthogonal * y ) + tileLocation );
-                        __result.Add ( ( direction * x ) + ( orthogonal * -y ) + tileLocation );
+                        case 0:
+                            direction = new Vector2 ( 0, -1 ); orthogonal = new Vector2 ( 1, 0 );
+                            break;
+                        case 1:
+                            direction = new Vector2 ( 1, 0 ); orthogonal = new Vector2 ( 0, 1 );
+                            break;
+                        case 2:
+                            direction = new Vector2 ( 0, 1 ); orthogonal = new Vector2 ( -1, 0 );
+                            break;
+                        case 3:
+                            direction = new Vector2 ( -1, 0 ); orthogonal = new Vector2 ( 0, -1 );
+                            break;
+                        default:
+                            direction = Vector2.Zero; orthogonal = Vector2.Zero;
+                            break;
+                    }
+
+                    // Override the power param with the current tool's max power index if set to immediately return the max AOE
+                    if ( config.mIBool )
+                    {
+                        powerLvl = who.CurrentTool.UpgradeLevel + 1;
+                    }
+                    else
+                    {
+                        powerLvl = power;
+                    }
+
+                    // Determine the AOE dimensions
+                    switch ( powerLvl )
+                    {
+                        // Set iridium values, modded or vanilla
+                        // Check for reaching enchantment and if present, use those values instead
+                        case 5:
+                            if ( who.CurrentTool.hasEnchantmentOfType<ReachingToolEnchantment> () )
+                            {
+                                length = ( ModEntry.config.rBool ) ? ModEntry.config.rLength : 5;
+                                radius = ( ModEntry.config.rBool ) ? ModEntry.config.rRadius : 2;
+                            }
+                            else
+                            {
+                                length = ( ModEntry.config.iBool ) ? ModEntry.config.iLength : 6;
+                                radius = ( ModEntry.config.iBool ) ? ModEntry.config.iRadius : 1;
+                            }
+                            break;
+
+                        // Set gold values, modded or vanilla
+                        case 4:
+                            length = ( ModEntry.config.gBool ) ? ModEntry.config.gLength : 3;
+                            radius = ( ModEntry.config.gBool ) ? ModEntry.config.gRadius : 1;
+                            break;
+
+                        // Set steel values, modded or vanilla
+                        case 3:
+                            length = ( ModEntry.config.sBool ) ? ModEntry.config.sLength : 5;
+                            radius = ( ModEntry.config.sBool ) ? ModEntry.config.sRadius : 0;
+                            break;
+
+                        // Set copper values, modded or vanilla
+                        case 2:
+                            length = ( ModEntry.config.cBool ) ? ModEntry.config.cLength : 3;
+                            radius = ( ModEntry.config.cBool ) ? ModEntry.config.cRadius : 0;
+                            break;
+                    }
+
+                    // After determining the starting point, orientation, and dimensions, use those to determine the final AOE result
+                    for ( int x = 0; x < length; x++ )
+                    {
+                        __result.Add ( direction * x + tileLocation );
+                        for ( int y = 1; y <= radius; y++ )
+                        {
+                            __result.Add ( ( direction * x ) + ( orthogonal * y ) + tileLocation );
+                            __result.Add ( ( direction * x ) + ( orthogonal * -y ) + tileLocation );
+                        }
                     }
                 }
             }
