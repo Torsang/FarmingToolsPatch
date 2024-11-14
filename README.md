@@ -108,7 +108,7 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 - [x] Copper Behavior Modification
 - [x] i18n Support
 - [ ] Ensure (realistically) maximum compatibility with other mods
-- [ ] Accomodate base-game tool enchantments
+- [x] Accomodate base-game tool enchantments
 
 ### License
 Licensed under the MIT License. See [here][License] for more information.
