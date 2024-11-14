@@ -14,10 +14,10 @@ using StardewValley.Enchantments;
 
 /***
  ** Original credit to ToweringRedwood for creating this mod in the first place. Many thanks, you're a legend. I hope to do justice to your work.
- ** TODO: Find out how to detect the reach enchant so I can work with it later
+ ** TODO: Confirm compatibility with DaLion's Chargeable Resource Tools https://www.nexusmods.com/stardewvalley/mods/23048
  ** Author: Torsang
- ** Latest Build: 2.0.0-beta3
- ** Build Date: 2024-11-12
+ ** Latest Build: 2.0.0-beta5
+ ** Build Date: 2024-11-13
 ***/
 
 // Formerly known as IridiumToolsPatch
@@ -49,7 +49,7 @@ namespace FarmingToolsPatch
 
             Type[] types = new Type[] { typeof ( Vector2 ), typeof ( int ), typeof ( Farmer ) };
             MethodInfo originalToolsMethod = typeof ( Tool ).GetMethod ( "tilesAffected", BindingFlags.Instance | BindingFlags.NonPublic, null, types, null );
-            MethodInfo farmingToolsPatch = typeof ( PatchedFarmingTilesAffected ).GetMethod ( "Postfix" );
+            MethodInfo farmingToolsPatch = typeof ( ModEntry ).GetMethod ( "Postfix" );
 
             harmony.Patch( originalToolsMethod, null, new HarmonyMethod ( farmingToolsPatch ) );
         }
@@ -57,6 +57,7 @@ namespace FarmingToolsPatch
         /*********
         ** Private Methods
         *********/
+        #region SMAPI method-appending methods
         private void GameLaunched ( object sender, GameLaunchedEventArgs e )
         {
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>( "spacechase0.GenericModConfigMenu" );
@@ -75,8 +76,8 @@ namespace FarmingToolsPatch
             // Ignore if save has not finished loading
             if ( Context.IsWorldReady )
             {
-                //Ignore if hot keys are disabled
-                if ( config.hKeyBool )
+                // Ignore if mod and/or hot keys are disabled
+                if ( config.hKeyBool && config.mainBool )
                 {
                     config.resetHold = config.cyclePwrLvl.GetState ();
 
@@ -106,72 +107,89 @@ namespace FarmingToolsPatch
 
         private void OnButtonsChanged ( object sender, ButtonsChangedEventArgs e )
         {
-            // Ignore if player hasn't loaded a save yet or hot keys are disabled
-            if ( !Context.IsWorldReady || !config.hKeyBool )
-            { return; }
-
-            if ( config.incLengthBtn.JustPressed () )
-            { adjustLength ( true ); }
-            if ( config.decLengthBtn.JustPressed () )
-            { adjustLength ( false ); }
-            if ( config.incRadiusBtn.JustPressed () )
-            { adjustRadius ( true ); }
-            if ( config.decRadiusBtn.JustPressed () )
-            { adjustRadius ( false ); }
+            // Ignore if player hasn't loaded a save yet
+            if ( Context.IsWorldReady )
+            {
+                // Ignore if the mod and/or hot keys are disabled
+                if ( config.hKeyBool && config.mainBool )
+                {
+                    if ( config.incLengthBtn.JustPressed () )
+                    { adjustLength ( true ); }
+                    if ( config.decLengthBtn.JustPressed () )
+                    { adjustLength ( false ); }
+                    if ( config.incRadiusBtn.JustPressed () )
+                    { adjustRadius ( true ); }
+                    if ( config.decRadiusBtn.JustPressed () )
+                    { adjustRadius ( false ); }
+                }
+            }
         }
+        #endregion SMAPI method-appending methods
 
+        /*
+          * Do the actual configuration changes when called from OnButtonsChanged above
+        */
+        #region Hotkey methods
         private void adjustLength ( bool increase = false )
         {
             switch ( config.pwrIndex )
             {
-                case (int) Pwr.Copper:
-                    config.cLength = Math.Clamp ( config.cLength + ( (increase) ? (1) : (-1) ), 1, toolMax );
+                case Pwr.Copper:
+                    config.modT[Pwr.Copper, Dim.Length] = Math.Clamp ( config.modT[Pwr.Copper, Dim.Length] + ( increase ? 1 : -1 ), 1, toolMax );
                     break;
 
-                case (int) Pwr.Steel:
-                    config.sLength = Math.Clamp ( config.sLength + ( (increase) ? (1) : (-1) ), 1, toolMax);
+                case Pwr.Steel:
+                    config.modT[Pwr.Steel, Dim.Length] = Math.Clamp ( config.modT[Pwr.Steel, Dim.Length] + ( increase ? 1 : -1 ), 1, toolMax);
                     break;
                     
-                case (int) Pwr.Gold:
-                    config.gLength = Math.Clamp ( config.gLength + ( (increase) ? (1) : (-1) ), 1, toolMax);
+                case Pwr.Gold:
+                    config.modT[Pwr.Gold, Dim.Length] = Math.Clamp ( config.modT[Pwr.Gold, Dim.Length] + ( increase ? 1 : -1 ), 1, toolMax );
                     break;
 
-                case (int) Pwr.Iridium:
-                    config.iLength = Math.Clamp ( config.iLength + ( (increase) ? (1) : (-1) ), 1, toolMax );
+                case Pwr.Iridium:
+                    config.modT[Pwr.Iridium, Dim.Length] = Math.Clamp ( config.modT[Pwr.Iridium, Dim.Length] + ( increase ? 1 : -1 ), 1, toolMax );
+                    break;
+
+                case Pwr.Reaching:
+                    config.modT[Pwr.Reaching, Dim.Length] = Math.Clamp ( config.modT[Pwr.Reaching, Dim.Length] + ( increase ? 1 : -1 ), 1, toolMax );
                     break;
 
                 default:
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "longer" ) : this.Helper.Translation.Get ( "shorter" ), 800f, false ) );
+            Game1.addHUDMessage ( new HUDMessage ( increase ? this.Helper.Translation.Get ( "longer" ) : this.Helper.Translation.Get ( "shorter" ), 800f, false ) );
         }
 
         private void adjustRadius (bool increase = false)
         {
-            switch (config.pwrIndex)
+            switch ( config.pwrIndex )
             {
-                case (int) Pwr.Copper:
-                    config.cRadius = Math.Clamp ( config.cRadius + ( (increase) ? (1) : (-1) ), 0, toolMax);
+                case Pwr.Copper:
+                    config.modT[Pwr.Copper, Dim.Radius] = Math.Clamp ( config.modT[Pwr.Copper, Dim.Radius] + ( increase ? 1 : -1 ), 0, toolMax);
                     break;
 
-                case (int) Pwr.Steel:
-                    config.sRadius = Math.Clamp ( config.sRadius + ( (increase) ? (1) : (-1) ), 0, toolMax );
+                case Pwr.Steel:
+                    config.modT[Pwr.Steel, Dim.Radius] = Math.Clamp ( config.modT[Pwr.Steel, Dim.Radius] + ( increase ? 1 : -1 ), 0, toolMax );
                     break;
 
-                case (int) Pwr.Gold:
-                    config.gRadius = Math.Clamp ( config.gRadius + ( (increase) ? (1) : (-1) ), 0, toolMax );
+                case Pwr.Gold:
+                    config.modT[Pwr.Gold, Dim.Radius] = Math.Clamp ( config.modT[Pwr.Gold, Dim.Radius] + ( increase ? 1 : -1 ), 0, toolMax );
                     break;
 
-                case (int) Pwr.Iridium:
-                    config.iRadius = Math.Clamp ( config.iRadius + ( (increase) ? (1) : (-1) ), 0, toolMax );
+                case Pwr.Iridium:
+                    config.modT[Pwr.Iridium, Dim.Radius] = Math.Clamp ( config.modT[Pwr.Iridium, Dim.Radius] + ( increase ? 1 : -1 ), 0, toolMax );
                     break;
 
+                case Pwr.Reaching:
+                    config.modT[Pwr.Reaching, Dim.Radius] = Math.Clamp ( config.modT[Pwr.Reaching, Dim.Radius] + ( increase ? 1 : -1 ), 0, toolMax );
+                    break;
+                
                 default:
                     break;
             }
 
-            Game1.addHUDMessage ( new HUDMessage ( (increase) ? this.Helper.Translation.Get ( "wider" ) : this.Helper.Translation.Get ( "narrower" ), 800f, false ) );
+            Game1.addHUDMessage ( new HUDMessage ( increase ? this.Helper.Translation.Get ( "wider" ) : this.Helper.Translation.Get ( "narrower" ), 800f, false ) );
         }
 
         private void cyclePowerLevel ()
@@ -179,119 +197,137 @@ namespace FarmingToolsPatch
             var message = this.Helper.Translation.Get ( "affect-default" );
             switch ( config.pwrIndex )
             {
-                case (int) Pwr.Copper:
-                    config.pwrIndex = (int) Pwr.Steel;
+                case Pwr.Copper:
+                    config.pwrIndex = Pwr.Steel;
                     message = this.Helper.Translation.Get ( "affect-steel" );
                     break;
 
-                case (int) Pwr.Steel:
-                    config.pwrIndex = (int) Pwr.Gold;
+                case Pwr.Steel:
+                    config.pwrIndex = Pwr.Gold;
                     message = this.Helper.Translation.Get ( "affect-gold" );
                     break;
 
-                case (int) Pwr.Gold:
-                    config.pwrIndex = (int) Pwr.Iridium;
+                case Pwr.Gold:
+                    config.pwrIndex = Pwr.Iridium;
                     message = this.Helper.Translation.Get ( "affect-iridium" );
                     break;
 
-                case (int) Pwr.Iridium:
-                    config.pwrIndex = (int) Pwr.Copper;
+                case Pwr.Iridium:
+                    config.pwrIndex = Pwr.Reaching;
                     message = this.Helper.Translation.Get ( "affect-copper" );
                     break;
 
+                case Pwr.Reaching:
+                    config.pwrIndex = Pwr.Copper;
+                    message = this.Helper.Translation.Get ( "affect-reaching" );
+                    break;
+
                 default:
-                    config.pwrIndex = (int) Pwr.Copper;
+                    config.pwrIndex = Pwr.Copper;
                     message = this.Helper.Translation.Get ( "affect-copper" );
                     break;
             }
 
             Game1.addHUDMessage ( new HUDMessage ( message, 800f, false ) );
         }
+        #endregion Hotkey methods
 
-        class PatchedFarmingTilesAffected
+        /*
+         * Refactored from Inner Class method to a regular member method
+         * This method below is the real core of the mod
+         * It was the primary bit that came from ToweringRedwood, expanded by me
+        */
+        static public void Postfix ( ref List<Vector2> __result, Vector2 tileLocation, int power, Farmer who )
         {
-            static public void Postfix (ref List<Vector2> __result, Vector2 tileLocation, int power, Farmer who )
+            if ( who.CurrentTool is ( WateringCan or Hoe ) )
             {
-                if ( who.CurrentTool is ( WateringCan or Hoe ) )
+                __result.Clear ();
+                Vector2 direction;
+                Vector2 orthogonal;
+                int length = 1, radius = 0, powerLvl = 1;
+
+                // Which direction to orient the AOE, and establish 1D arrays to that effect
+                switch ( who.FacingDirection )
                 {
-                    __result.Clear ();
-                    Vector2 direction;
-                    Vector2 orthogonal;
-                    int length = 1, radius = 0, powerLvl = 1;
+                    // Up?
+                    case 0:
+                        direction = new Vector2 ( 0, -1 ); orthogonal = new Vector2 ( 1, 0 );
+                        break;
+                    
+                    // Right?
+                    case 1:
+                        direction = new Vector2 ( 1, 0 ); orthogonal = new Vector2 ( 0, 1 );
+                        break;
+                    
+                    // Down?
+                    case 2:
+                        direction = new Vector2 ( 0, 1 ); orthogonal = new Vector2 ( -1, 0 );
+                        break;
+                    
+                    // Left?
+                    case 3:
+                        direction = new Vector2 ( -1, 0 ); orthogonal = new Vector2 ( 0, -1 );
+                        break;
+                    
+                    // Fail-state?
+                    default:
+                        direction = Vector2.Zero; orthogonal = Vector2.Zero;
+                        break;
+                }
 
-                    // Which direction to orient the AOE, and establish matrix multipliers to that effect
-                    switch ( who.FacingDirection )
+                // Override the power param with the current tool's max power index if set to immediately return the max AOE
+                if ( config.mIBool && config.mainBool )
+                {
+                    powerLvl = who.CurrentTool.UpgradeLevel + 1;
+                    if ( who.CurrentTool.hasEnchantmentOfType<ReachingToolEnchantment>() )
+                    { powerLvl++; }
+                }
+                else
+                { powerLvl = power; }
+
+                // Determine the AOE dimensions
+                switch ( powerLvl )
+                {
+                    // Set reaching(enchant) values, modded or base-game
+                    case 6:
+                        length = ( config.rBool && config.mainBool ) ? config.modT[Pwr.Reaching, Dim.Length] : config.baseT[Pwr.Reaching, Dim.Length];
+                        radius = ( config.rBool && config.mainBool ) ? config.modT[Pwr.Reaching, Dim.Radius] : config.baseT[Pwr.Reaching, Dim.Radius];
+                        break;
+
+                    // Set iridium values, modded or base-game
+                    case 5:
+                        length = ( config.iBool && config.mainBool ) ? config.modT[Pwr.Iridium, Dim.Length] : config.baseT[Pwr.Iridium, Dim.Length];
+                        radius = ( config.iBool && config.mainBool ) ? config.modT[Pwr.Iridium, Dim.Radius] : config.baseT[Pwr.Iridium, Dim.Radius];
+                        break;
+
+                    // Set gold values, modded or base-game
+                    case 4:
+                        length = ( config.gBool && config.mainBool ) ? config.modT[Pwr.Gold, Dim.Length] : config.baseT[Pwr.Gold, Dim.Length];
+                        radius = ( config.gBool && config.mainBool ) ? config.modT[Pwr.Gold, Dim.Radius] : config.baseT[Pwr.Gold, Dim.Radius];
+                        break;
+
+                    // Set steel values, modded or base-game
+                    case 3:
+                        length = ( config.sBool && config.mainBool ) ? config.modT[Pwr.Steel, Dim.Length] : config.baseT[Pwr.Steel, Dim.Length];
+                        radius = ( config.sBool && config.mainBool ) ? config.modT[Pwr.Steel, Dim.Radius] : config.baseT[Pwr.Steel, Dim.Radius];
+                        break;
+
+                    // Set copper values, modded or base-game
+                    case 2:
+                        length = ( config.cBool && config.mainBool ) ? config.modT[Pwr.Copper, Dim.Length] : config.baseT[Pwr.Copper, Dim.Length];
+                        radius = ( config.cBool && config.mainBool ) ? config.modT[Pwr.Copper, Dim.Radius] : config.baseT[Pwr.Copper, Dim.Radius];
+                        break;
+                }
+
+                // After determining the starting point, orientation, and dimensions, use those to calculate the final AOE result
+                // TODO: Streamline to avoid for-loop?
+                for ( int x = 0; x < length; x++ )
+                {
+                    __result.Add ( direction * x + tileLocation );
+                    for ( int y = 1; y <= radius; y++ )
                     {
-                        case 0:
-                            direction = new Vector2 ( 0, -1 ); orthogonal = new Vector2 ( 1, 0 );
-                            break;
-                        case 1:
-                            direction = new Vector2 ( 1, 0 ); orthogonal = new Vector2 ( 0, 1 );
-                            break;
-                        case 2:
-                            direction = new Vector2 ( 0, 1 ); orthogonal = new Vector2 ( -1, 0 );
-                            break;
-                        case 3:
-                            direction = new Vector2 ( -1, 0 ); orthogonal = new Vector2 ( 0, -1 );
-                            break;
-                        default:
-                            direction = Vector2.Zero; orthogonal = Vector2.Zero;
-                            break;
-                    }
-
-                    // Override the power param with the current tool's max power index if set to immediately return the max AOE
-                    if ( config.mIBool )
-                    {
-                        powerLvl = who.CurrentTool.UpgradeLevel + 1;
-                        if ( who.CurrentTool.hasEnchantmentOfType<ReachingToolEnchantment>() )
-                        { powerLvl++; }
-                    }
-                    else
-                    { powerLvl = power; }
-
-                    // Determine the AOE dimensions
-                    switch ( powerLvl )
-                    {
-                        // Set iridium values, modded or vanilla
-                        // Check for reaching enchantment and if present, use those values instead
-                        case 6:
-                            length = ( ModEntry.config.rBool ) ? ModEntry.config.rLength : 5;
-                            radius = ( ModEntry.config.rBool ) ? ModEntry.config.rRadius : 2;
-                            break;
-
-                        case 5:
-                            length = ( ModEntry.config.iBool ) ? ModEntry.config.iLength : 6;
-                            radius = ( ModEntry.config.iBool ) ? ModEntry.config.iRadius : 1;
-                            break;
-
-                        // Set gold values, modded or vanilla
-                        case 4:
-                            length = ( ModEntry.config.gBool ) ? ModEntry.config.gLength : 3;
-                            radius = ( ModEntry.config.gBool ) ? ModEntry.config.gRadius : 1;
-                            break;
-
-                        // Set steel values, modded or vanilla
-                        case 3:
-                            length = ( ModEntry.config.sBool ) ? ModEntry.config.sLength : 5;
-                            radius = ( ModEntry.config.sBool ) ? ModEntry.config.sRadius : 0;
-                            break;
-
-                        // Set copper values, modded or vanilla
-                        case 2:
-                            length = ( ModEntry.config.cBool ) ? ModEntry.config.cLength : 3;
-                            radius = ( ModEntry.config.cBool ) ? ModEntry.config.cRadius : 0;
-                            break;
-                    }
-
-                    // After determining the starting point, orientation, and dimensions, use those to determine the final AOE result
-                    for ( int x = 0; x < length; x++ )
-                    {
-                        __result.Add ( direction * x + tileLocation );
-                        for ( int y = 1; y <= radius; y++ )
-                        {
-                            __result.Add ( ( direction * x ) + ( orthogonal * y ) + tileLocation );
-                            __result.Add ( ( direction * x ) + ( orthogonal * -y ) + tileLocation );
-                        }
+                        __result.Add ( ( direction * x ) + ( orthogonal * y ) + tileLocation );
+                        __result.Add ( ( direction * x ) + ( orthogonal * -y ) + tileLocation );
                     }
                 }
             }

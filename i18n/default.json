@@ -1,5 +1,7 @@
 {
-  // Notifications In-Game
+  /*********
+  ** In-Game Notification
+  *********/
   "longer": "Longer Reach",
   "shorter": "Shorter Reach",
   "wider": "Wider Radius",
@@ -10,14 +12,29 @@
   "affect-steel": "Adjusting Steel",
   "affect-gold": "Adjusting Gold",
   "affect-iridium": "Adjusting Iridium",
-  "affect-ench": "Adjusting Reaching",
+  "affect-reach": "Adjusting Reaching",
 
   "reset-notify": "Tools AOE reset to defaults",
+  "gmcm-empty-entry": " -------------------- ",
 
-  // GMCM Hotkey Section
-  "hotkey-options": "Hotkey Options",
-  "hotkey-toggle": "Toggle Hotkeys",
+  /*********
+  ** Main Mod Toggle
+  *********/
+  "main-mod-section": "Mod Status",
+  "main-mod-toggle": "Enable Farming Tools Patch",
+  "main-mod-toggle-tooltip": "Check to enable the mod, uncheck to disable",
+
+  /*********
+  ** GMCM Hotkey Section
+  *********/
+  "hotkey-section": "Hotkeys",
+  "hotkey-toggle": "Enable Hotkeys",
   "hktoggle-tooltip": "Check to enable hotkeys, uncheck to disable",
+
+  // GMCM Hotkey Page Section
+  "hotkey-pageID": "Hotkeys",
+  "hotkey-page-name": "> More Hotkeys Settings",
+  "hotkey-page-tooltip": "Configure hot-key related settings",
 
   "length-inc-btn": "Increase AOE Length",
   "length-ib-tooltip": "Add tiles to the reach of your tool's area of effect",
@@ -36,6 +53,19 @@
 
   "reset-default-btn": "Reload Default AOE Values",
   "reset-tooltip": "Holding the Cycle Charge Level key for this many seconds will reset the mod's values to default",
+
+
+  /*********
+  ** GMCM AOE Section
+  *********/
+  "aoe-section": "AOE Settings",
+  "max-immediate-toggle": "Max AOE at First Charge",
+  "max-immediate-toggle-tooltip": "Charged AOE is always the max size for your tool's quality",
+
+  // GMCM AOE Page Section
+  "aoe-pageID": "AOESettings",
+  "aoe-page-name": "> More Area of Effect Settings",
+  "aoe-page-tooltip": "Configure AOE related settings",
 
   // Reaching (level 5) Options
   "reach-section": "Reaching Tools",
@@ -56,11 +86,6 @@
   // Copper (level 1) Options
   "copper-section": "Copper Tools",
   "copper-bool": "Modify Copper Tools",
-
-  // Maximum Immediate Options
-  "max-immediate-section": "Max AOE Settings",
-  "max-immediate-bool": "Max AOE at First Charge",
-  "max-immediate-bool-tooltip": "Charged AOE is always the max size for your tool's quality",
 
   // Generic Tool Options
   "tool-bool-tooltip": "Check to use the below settings, uncheck to use vanilla values",

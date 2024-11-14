@@ -24,10 +24,35 @@ namespace FarmingToolsPatch
                 save: () => mod.Helper.WriteConfig ( ModEntry.config )
             );
 
+            /**********
+            ** Top-level Options
+            ** Note: Not enough here to merit its own separate page
+            **********/
+            #region Main Page
             cfgMenu.AddSectionTitle
             (
                 mod: mod.ModManifest,
-                text: () => mod.Helper.Translation.Get ( "hotkey-options" )
+                text: () => mod.Helper.Translation.Get ( "main-mod-section" )
+            );
+            cfgMenu.AddBoolOption
+            (
+                mod: mod.ModManifest,
+                name: () => mod.Helper.Translation.Get ( "main-mod-toggle" ),
+                tooltip: () => mod.Helper.Translation.Get ( "main-mod-toggle-tooltip" ),
+                getValue: () => ModEntry.config.mainBool,
+                setValue: value => ModEntry.config.mainBool = value
+            );
+
+            cfgMenu.AddSectionTitle
+            (
+                mod: mod.ModManifest,
+                text: () => mod.Helper.Translation.Get ( "gmcm-empty-entry" )
+            );
+
+            cfgMenu.AddSectionTitle
+            (
+                mod: mod.ModManifest,
+                text: () => mod.Helper.Translation.Get ( "hotkey-section" )
             );
             cfgMenu.AddBoolOption
             (
@@ -36,6 +61,54 @@ namespace FarmingToolsPatch
                 tooltip: () => mod.Helper.Translation.Get ( "hktoggle-tooltip" ),
                 getValue: () => ModEntry.config.hKeyBool,
                 setValue: value => ModEntry.config.hKeyBool = value
+            );
+
+            cfgMenu.AddPageLink
+            (
+                mod: mod.ModManifest,
+                pageId: mod.Helper.Translation.Get ( "hotkey-pageID" ),
+                text: () => mod.Helper.Translation.Get ( "hotkey-page-name" ),
+                tooltip: () => mod.Helper.Translation.Get ( "hotkey-page-tooltip" )
+            );
+
+            cfgMenu.AddSectionTitle
+            (
+                mod: mod.ModManifest,
+                text: () => mod.Helper.Translation.Get ( "gmcm-empty-entry" )
+            );
+
+            cfgMenu.AddSectionTitle
+            (
+                mod: mod.ModManifest,
+                text: () => mod.Helper.Translation.Get ( "aoe-section" )
+            );
+            cfgMenu.AddBoolOption
+            (
+                mod: mod.ModManifest,
+                name: () => mod.Helper.Translation.Get ( "max-immediate-toggle" ),
+                tooltip: () => mod.Helper.Translation.Get ( "max-immediate-toggle-tooltip" ),
+                getValue: () => ModEntry.config.mIBool,
+                setValue: value => ModEntry.config.mIBool = value
+            );
+
+            cfgMenu.AddPageLink
+            (
+                mod: mod.ModManifest,
+                pageId: mod.Helper.Translation.Get ( "aoe-pageID" ),
+                text: () => mod.Helper.Translation.Get ( "aoe-page-name" ),
+                tooltip: () => mod.Helper.Translation.Get ( "aoe-page-tooltip" )
+            );
+            #endregion Main Page
+
+            /**********
+            ** Hotkey Page
+            **********/
+            #region Hotkey Page
+            cfgMenu.AddPage
+            (
+                mod: mod.ModManifest,
+                pageId: mod.Helper.Translation.Get ( "hotkey-pageID" ),
+                pageTitle: () => mod.Helper.Translation.Get ( "hotkey-page-name" )
             );
             cfgMenu.AddKeybindList
             (
@@ -88,6 +161,18 @@ namespace FarmingToolsPatch
                 max: 5,
                 interval: 1
             );
+            #endregion Hotkey Page
+
+            /**********
+            ** AOE Page
+            **********/
+            #region AOE Page
+            cfgMenu.AddPage
+            (
+                mod: mod.ModManifest,
+                pageId: mod.Helper.Translation.Get ( "aoe-pageID" ),
+                pageTitle: () => mod.Helper.Translation.Get ( "aoe-page-name" )
+            );
 
             cfgMenu.AddSectionTitle
             (
@@ -107,8 +192,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-length" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-l-tooltip" ),
-                getValue: () => ModEntry.config.rLength,
-                setValue: value => ModEntry.config.rLength = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Reaching, (int) Dim.Length],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Reaching, (int) Dim.Length] = value,
                 min: 1,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -118,8 +203,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-radius" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-r-tooltip" ),
-                getValue: () => ModEntry.config.rRadius,
-                setValue: value => ModEntry.config.rRadius = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Reaching, (int) Dim.Radius],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Reaching, (int) Dim.Radius] = value,
                 min: 0,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -143,8 +228,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-length" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-l-tooltip" ),
-                getValue: () => ModEntry.config.iLength,
-                setValue: value => ModEntry.config.iLength = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Iridium, (int) Dim.Length],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Iridium, (int) Dim.Length] = value,
                 min: 1,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -154,8 +239,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-radius" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-r-tooltip" ),
-                getValue: () => ModEntry.config.iRadius,
-                setValue: value => ModEntry.config.iRadius = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Iridium, (int) Dim.Radius],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Iridium, (int) Dim.Radius] = value,
                 min: 0,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -179,8 +264,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-length" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-l-tooltip" ),
-                getValue: () => ModEntry.config.gLength,
-                setValue: value => ModEntry.config.gLength = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Gold, (int) Dim.Length],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Gold, (int) Dim.Length] = value,
                 min: 1,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -190,8 +275,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-radius" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-r-tooltip" ),
-                getValue: () => ModEntry.config.gRadius,
-                setValue: value => ModEntry.config.gRadius = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Gold, (int) Dim.Radius],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Gold, (int) Dim.Radius] = value,
                 min: 0,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -215,8 +300,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-length" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-l-tooltip" ),
-                getValue: () => ModEntry.config.sLength,
-                setValue: value => ModEntry.config.sLength = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Steel, (int) Dim.Length],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Steel, (int) Dim.Length] = value,
                 min: 1,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -226,8 +311,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-radius" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-r-tooltip" ),
-                getValue: () => ModEntry.config.sRadius,
-                setValue: value => ModEntry.config.sRadius = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Steel, (int) Dim.Radius],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Steel, (int) Dim.Radius] = value,
                 min: 0,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -251,8 +336,8 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-length" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-l-tooltip" ),
-                getValue: () => ModEntry.config.cLength,
-                setValue: value => ModEntry.config.cLength = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Copper, (int) Dim.Length],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Copper, (int) Dim.Length] = value,
                 min: 1,
                 max: ModEntry.toolMax,
                 interval: 1
@@ -262,26 +347,13 @@ namespace FarmingToolsPatch
                 mod: mod.ModManifest,
                 name: () => mod.Helper.Translation.Get ( "tool-radius" ),
                 tooltip: () => mod.Helper.Translation.Get ( "tool-r-tooltip" ),
-                getValue: () => ModEntry.config.cRadius,
-                setValue: value => ModEntry.config.cRadius = value,
+                getValue: () => ModEntry.config.modT [(int) Pwr.Copper, (int) Dim.Radius],
+                setValue: value => ModEntry.config.modT [(int) Pwr.Copper, (int) Dim.Radius] = value,
                 min: 0,
                 max: ModEntry.toolMax,
                 interval: 1
             );
-
-            cfgMenu.AddSectionTitle
-            (
-                mod: mod.ModManifest,
-                text: () => mod.Helper.Translation.Get ( "max-immediate-section" )
-            );
-            cfgMenu.AddBoolOption
-            (
-                mod: mod.ModManifest,
-                name: () => mod.Helper.Translation.Get ( "max-immediate-bool" ),
-                tooltip: () => mod.Helper.Translation.Get ( "max-immediate-bool-tooltip" ),
-                getValue: () => ModEntry.config.mIBool,
-                setValue: value => ModEntry.config.mIBool = value
-            );
+            #endregion AOE Page
         }
     }
 }

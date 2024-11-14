@@ -1,4 +1,4 @@
-# Farming Tools Patch - Version 2.0.0-beta3
+# Farming Tools Patch - Version 2.0.0-beta5
 _Forked and updated for Stardew Valley 1.6 running SMAPI 4.0.8+ and Harmony 2.0+_
 
 ### Releases 
@@ -21,6 +21,19 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 |Quote|Decreases tool AoE width|
 
 ### Changelog
+<details>
+  <summary>Version 2.0.0-beta5 - One Toggle To Rule Them All</summary>
+
+  - Added whole-mod toggle to GMCM main page
+  - Refactored enums into classes with constant integers (attempt to reduce code verbosity without sacrificing self-documentability, RIP int casts)
+  - Refactored configuration variables controlling AOE dimensions into 2D arrays, allowing for removal of magic numbers
+</details>
+<details>
+  <summary>Version 2.0.0-beta4 - GMCM Refactoring</summary>
+
+  - Refactored large swaths of GMCM components into separate pages
+  - Added optional GMCM dependency to manifest.json
+</details>
 <details>
   <summary>Version 2.0.0-beta3 - Bugfixes</summary>
 
