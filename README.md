@@ -1,4 +1,4 @@
-# Farming Tools Patch - Version 2.0.0-beta5
+# Farming Tools Patch - Version 2.0.0-beta6
 _Forked and updated for Stardew Valley 1.6 running SMAPI 4.0.8+ and Harmony 2.0+_
 
 ### Releases 
