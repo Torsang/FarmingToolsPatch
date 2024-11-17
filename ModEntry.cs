@@ -1,14 +1,10 @@
-﻿using System;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using System.Reflection;
 using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using GenericModConfigMenu;
-using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI.Utilities;
 using StardewValley.Tools;
 using StardewValley.Enchantments;
 
@@ -16,8 +12,8 @@ using StardewValley.Enchantments;
  ** Original credit to ToweringRedwood for creating this mod in the first place. Many thanks, you're a legend. I hope to do justice to your work.
  ** TODO: Confirm compatibility with DaLion's Chargeable Resource Tools https://www.nexusmods.com/stardewvalley/mods/23048
  ** Author: Torsang
- ** Latest Build: 2.0.0-beta5
- ** Build Date: 2024-11-13
+ ** Latest Build: 2.0.0-beta6
+ ** Build Date: 2024-11-17
 ***/
 
 // Formerly known as IridiumToolsPatch
@@ -214,12 +210,12 @@ namespace FarmingToolsPatch
 
                 case Pwr.Iridium:
                     config.pwrIndex = Pwr.Reaching;
-                    message = this.Helper.Translation.Get ( "affect-copper" );
+                    message = this.Helper.Translation.Get ( "affect-reaching" );
                     break;
 
                 case Pwr.Reaching:
                     config.pwrIndex = Pwr.Copper;
-                    message = this.Helper.Translation.Get ( "affect-reaching" );
+                    message = this.Helper.Translation.Get ( "affect-copper" );
                     break;
 
                 default:

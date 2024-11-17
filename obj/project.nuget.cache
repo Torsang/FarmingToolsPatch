@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "BbkCxutjgltTXFP3ERg53EOhYyTP/riuS8XjLm17Ji02V5L+o6RnzIFPQvwCWgK2kagKvHJTN5eiPh006yykeA==",
+  "dgSpecHash": "zOa1WomTgBnVpfQGQWnMvUEkWrjLjfpnxtQdtHdwjI7nCJYSKtAsyes17vDm3s+LopuvTJZ9sYZyLA6NHDI9Dg==",
   "success": true,
   "projectFilePath": "F:\\Projects\\Stardew\\FarmingToolsPatch\\FarmingToolsPatch.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Richard\\.nuget\\packages\\lib.harmony\\2.3.3\\lib.harmony.2.3.3.nupkg.sha512",
-    "C:\\Users\\Richard\\.nuget\\packages\\pathoschild.stardew.modbuildconfig\\4.1.1\\pathoschild.stardew.modbuildconfig.4.1.1.nupkg.sha512",
+    "C:\\Users\\Richard\\.nuget\\packages\\pathoschild.stardew.modbuildconfig\\4.3.2\\pathoschild.stardew.modbuildconfig.4.3.2.nupkg.sha512",
     "C:\\Users\\Richard\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\Richard\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\Richard\\.nuget\\packages\\system.text.json\\6.0.9\\system.text.json.6.0.9.nupkg.sha512"

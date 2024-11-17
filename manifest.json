@@ -1,11 +1,11 @@
 {
   "Name": "FarmingToolsPatch",
   "Author": "Torsang",
-  "Version": "2.0.0-beta5",
+  "Version": "2.0.0-beta6",
   "Description": "Updates farm tools' charged usage to better match sprinklers.",
   "UniqueID": "Torsang.FarmingToolsPatch",
   "EntryDll": "FarmingToolsPatch.dll",
-  "MinimumApiVersion": "4.0.8",
+  "MinimumApiVersion": "4.1.7",
   "UpdateKeys": [ "Nexus:24066" ],
   "Dependencies": [
     {

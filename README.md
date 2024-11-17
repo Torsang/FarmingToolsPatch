@@ -22,6 +22,13 @@ These keys can be remapped in Generic Mod Config Menu or in the config.json file
 
 ### Changelog
 <details>
+  <summary>Version 2.0.0-beta6 - In With the Nu(get)</summary>
+
+  - Updated to SMAPI ModBuildConfig 4.3.2
+  - Removed unnecessary C# library includes (fingers crossed they're ACTUALLY unnecessary!)
+  - Fixed logic for selecting power level adjustment
+</details>
+<details>
   <summary>Version 2.0.0-beta5 - One Toggle To Rule Them All</summary>
 
   - Added whole-mod toggle to GMCM main page
